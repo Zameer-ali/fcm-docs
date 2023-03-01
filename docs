@@ -1,0 +1,156 @@
+send notification in php
+To send an FCM notification in PHP, you need to follow these steps:
+
+Set up Firebase Console: First, you need to set up a Firebase Console account, create a new project, and enable Firebase Cloud Messaging.
+
+Register your app: After enabling FCM, you need to register your application for FCM. This involves adding Firebase SDK to your app, setting up Firebase messaging service, and configuring Firebase messaging for your app.
+
+Obtain the server key: To send notifications from a server, you need to obtain the server key from Firebase Console.
+
+Use Firebase Cloud Messaging API: You can use Firebase Cloud Messaging API to send notifications programmatically. Here's an example code snippet to send an FCM notification in PHP:
+
+php
+Copy code
+<?php
+// Replace with your server key from Firebase Console
+$server_key = 'your_server_key';
+
+// Replace with your FCM registration token
+$token = 'device_token';
+
+// Set the message data
+$message = [
+    'title' => 'Notification Title',
+    'body' => 'Notification Body',
+];
+
+// Set the message data and target device
+$fields = [
+    'to' => $token,
+    'data' => $message,
+];
+
+// Set the request headers
+$headers = [
+    'Authorization: key=' . $server_key,
+    'Content-Type: application/json',
+];
+
+// Send the message using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+$result = curl_exec($ch);
+curl_close($ch);
+
+// Print the result
+echo $result;
+?>
+In the above code, replace your_server_key with your Firebase server key and device_token with the FCM registration token of the device you want to send a notification to. You can also customize the message data by modifying the $message array.
+
+
+
+
+IINV Test
+set icon for notification in with above code
+To set an icon for the notification in the PHP code snippet above, you need to add the icon field to the message data. Here's an updated code snippet with an example icon:
+
+php
+Copy code
+<?php
+// Replace with your server key from Firebase Console
+$server_key = 'your_server_key';
+
+// Replace with your FCM registration token
+$token = 'device_token';
+
+// Set the message data
+$message = [
+    'title' => 'Notification Title',
+    'body' => 'Notification Body',
+    'icon' => 'https://example.com/notification-icon.png'
+];
+
+// Set the message data and target device
+$fields = [
+    'to' => $token,
+    'data' => $message,
+];
+
+// Set the request headers
+$headers = [
+    'Authorization: key=' . $server_key,
+    'Content-Type: application/json',
+];
+
+// Send the message using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+$result = curl_exec($ch);
+curl_close($ch);
+
+// Print the result
+echo $result;
+?>
+In the above code, replace 'https://example.com/notification-icon.png' with the URL of the icon you want to use for the notification. The icon must be available on a public URL that can be accessed by Firebase Cloud Messaging. You can use any image format that is supported by Android, such as PNG or JPG.
+
+
+
+
+IINV Test
+can i send extra key for checking the notification is from chat screen or from other screen
+Yes, you can send extra keys with your FCM notification to identify the source of the notification. One way to do this is by adding custom data to the message payload, as shown in the previous examples.
+
+For example, you can add a key screen to the message data and set its value to chat or other depending on where the notification is sent from. You can then retrieve this data in your app and use it to handle the notification differently depending on the source.
+
+Here's an updated PHP code snippet with an example of how to send the screen key in the message data:
+
+php
+Copy code
+<?php
+// Replace with your server key from Firebase Console
+$server_key = 'your_server_key';
+
+// Replace with your FCM registration token
+$token = 'device_token';
+
+// Set the message data
+$message = [
+    'title' => 'Notification Title',
+    'body' => 'Notification Body',
+    'screen' => 'chat', // Set the source of the notification
+];
+
+// Set the message data and target device
+$fields = [
+    'to' => $token,
+    'data' => $message,
+];
+
+// Set the request headers
+$headers = [
+    'Authorization: key=' . $server_key,
+    'Content-Type: application/json',
+];
+
+// Send the message using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+$result = curl_exec($ch);
+curl_close($ch);
+
+// Print the result
+echo $result;
+?>
+In the above code, replace 'chat' with the source of the notification that you want to send, such as 'other' for notifications from other screens. In your app, you can retrieve the screen value from the notification data and handle the notification accordingly.
